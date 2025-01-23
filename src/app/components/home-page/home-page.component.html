@@ -1,0 +1,27 @@
+<p>home-page works!</p>
+
+
+
+<div class="container">
+    <div class="row row-cols-1 row-cols-lg-3" *ngIf="categories$ | async as categories">
+        <div class="col" *ngFor="let category of categories; let i = index">
+            <a class="text-decoration-none" [routerLink]="['/category', category.id]">
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row align-items-center g-0">
+                        <div class="col-md-4 d-none d-md-flex">
+                            <img [src]="'https://picsum.photos/200/300?random=' + i" class="img-fluid"
+                                [alt]="category.name">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ category.name }}</h5>
+                                <p class="card-text"><small class="text-body-secondary"><strong>{{ category.productCount
+                                            }}</strong> products</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
