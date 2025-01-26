@@ -1,4 +1,4 @@
-<div class="container" *ngIf="product$ | async as product">
+<div class="container" *ngIf="product$ | async as product; else loading">
     <ol class="breadcrumb mt-5">
         <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
         <li class="breadcrumb-item"><a [routerLink]="['/category', product.category._id]">{{ product.category.name
@@ -21,9 +21,14 @@
 
                     <div class="alert alert-primary text-center my-3">
                         Order today and get it delivered tomorrow!
-                        <strong *ngIf="countdown$ | async as countdown">
+                        <strong *ngIf="countdown$ | async as countdown; else loading">
                             {{ countdown }}
                         </strong>
+                        <ng-template #loading>
+                            <span class="spinner-border spinner-border-sm" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </span>
+                        </ng-template>
                     </div>
 
                     <button class="btn btn-primary w-100 d-flex align-items-center justify-content-center">Add to cart
@@ -38,3 +43,11 @@
     </div>
     <app-related-product-list [categoryId]="product.category._id" [productId]="product._id"></app-related-product-list>
 </div>
+
+<ng-template #loading>
+    <div class="d-flex justify-content-center align-items-center h-100 p-5">
+        <div class="spinner-border" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</ng-template>
