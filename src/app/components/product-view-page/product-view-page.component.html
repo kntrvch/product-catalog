@@ -21,14 +21,17 @@
 
                     <div class="alert alert-primary text-center my-3">
                         Order today and get it delivered tomorrow!
-                        <strong *ngIf="countdown$ | async as countdown; else loading">
-                            {{ countdown }}
-                        </strong>
-                        <ng-template #loading>
-                            <span class="spinner-border spinner-border-sm" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </span>
-                        </ng-template>
+                        <div>
+                            <strong *ngIf="countdown$ | async as countdown; else loading">
+                                {{ countdown }}
+                            </strong>
+                            <ng-template #loading>
+                                <span class="spinner-border spinner-border-sm" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </span>
+                            </ng-template>
+                        </div>
+
                     </div>
 
                     <button class="btn btn-primary w-100 d-flex align-items-center justify-content-center">Add to cart

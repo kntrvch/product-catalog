@@ -16,6 +16,20 @@
   --bs-navbar-color: #ffffff;
   --bs-border-color-translucent: rgba(255, 255, 255, 0.175);
   --bs-heading-color: #ffffff;
+
+  .btn-primary {
+    --bs-btn-color: #121212;
+    --bs-btn-bg: #fff;
+    --bs-btn-border-color: #fff;
+    --bs-btn-hover-color: #121212;
+    --bs-btn-hover-bg: #e0e0e0;
+    --bs-btn-hover-border-color: #e0e0e0;
+    --bs-btn-focus-shadow-rgb: 60, 60, 60;
+    --bs-btn-active-color: #121212;
+    --bs-btn-active-bg: #e0e0e0;
+    --bs-btn-active-border-color: #e0e0e0;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  }
 }
 
 a {
@@ -47,6 +61,6 @@ a {
 
 .btn {
   svg {
-    margin-left: .5rem;
+    margin-left: 0.5rem;
   }
 }
