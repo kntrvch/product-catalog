@@ -1,12 +1,25 @@
-<p>home-page works!</p>
-
-
+<div class="position-relative overflow-hidden p-3 p-md-5 text-center bg-tertiary">
+    <div class="col-md-6 p-lg-5 mx-auto my-5">
+        <h1 class="display-3 fw-bold">Redefine Your Style</h1>
+        <h3 class="fw-normal text-muted mb-5">Step into a world where fashion meets individuality</h3>
+        <div class="d-flex gap-3 justify-content-center lead fw-normal">
+            <a class="btn btn-primary" href="#">
+                Learn more
+            </a>
+            <a class="btn btn-link text-decoration-none" href="#">
+                Browse
+            </a>
+        </div>
+    </div>
+    <div class="product-device shadow-sm d-none d-md-block"></div>
+    <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
+</div>
 
 <div class="container">
-    <div class="row row-cols-1 row-cols-lg-3" *ngIf="categories$ | async as categories">
+    <div class="row row-cols-1 row-cols-lg-3 mb-5" *ngIf="categories$ | async as categories">
         <div class="col" *ngFor="let category of categories; let i = index">
-            <a class="text-decoration-none" [routerLink]="['/category', category.id]">
-                <div class="card mb-3" style="max-width: 540px;">
+            <a class="text-decoration-none" [routerLink]="['/category', category._id]">
+                <div class="card mb-3">
                     <div class="row align-items-center g-0">
                         <div class="col-md-4 d-none d-md-flex">
                             <img [src]="'https://picsum.photos/200/300?random=' + i" class="img-fluid"
@@ -15,8 +28,15 @@
                         <div class="col-md-8">
                             <div class="card-body">
                                 <h5 class="card-title">{{ category.name }}</h5>
-                                <p class="card-text"><small class="text-body-secondary"><strong>{{ category.productCount
+                                <p class="card-text"><small class="text-body-secondary"><strong>{{
+                                            category.productCount
                                             }}</strong> products</small></p>
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                    viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                                    <path
+                                        d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
+                                </svg>
                             </div>
                         </div>
                     </div>

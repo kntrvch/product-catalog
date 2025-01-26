@@ -1,19 +1,44 @@
 /* You can add global styles to this file, and also import other style files */
 
 :root {
-//   --bs-body-bg: #ffffff;
-//   --bs-body-color: #212529;
-//   --bs-link-color: #007bff;
-//   --bs-link-hover-color: #0056b3;
-//   --bs-navbar-bg: #ffffff;
-//   --bs-navbar-color: #212529;
+  --bs-link-color: #212529;
+  --bs-link-hover-color: rgba(33, 37, 41, 0.7);
 }
 
 [data-theme="dark"] {
   --bs-body-bg: #121212;
   --bs-body-color: #e0e0e0;
-  --bs-link-color: #1e90ff;
-  --bs-link-hover-color: #3b8eea;
+  --bs-link-color: #fff;
+  --bs-link-hover-color: rgba(255, 255, 255, 0.7);
   --bs-navbar-bg: #343a40;
   --bs-navbar-color: #ffffff;
+  --bs-border-color-translucent: rgba(255, 255, 255, 0.175);
+  --bs-heading-color: #ffffff;
+}
+
+a {
+  .card {
+    transition: 0.2s border-color ease-in;
+    .card-body {
+      svg {
+        position: absolute;
+        right: 1rem;
+        bottom: 1rem;
+        opacity: 0.25;
+        transition: 0.2s opacity ease-in;
+      }
+    }
+  }
+  &:active,
+  &:focus,
+  &:hover {
+    .card {
+      border-color: var(--bs-border-color);
+      .card-body {
+        svg {
+          opacity: 0.5;
+        }
+      }
+    }
+  }
 }

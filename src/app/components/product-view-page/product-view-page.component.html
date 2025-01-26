@@ -1,1 +1,21 @@
 <p>product-view-page works!</p>
+<div *ngIf="countdown$ | async as countdown">
+    Order within: {{ countdown }}
+</div>
+
+<div class="container">
+    <div class="row row-cols-1 row-cols-lg-3" *ngIf="product$ | async as product">
+        <div class="col">
+            <a class="text-decoration-none" [routerLink]="['/category', product.id]">
+                <div class="card mb-3">
+                    <img [src]="product.image" class="card-img-top" [alt]="product.name">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+                        <a class="text-decoration-none" [routerLink]="['/product', product.id]" class="btn btn-primary">Details</a>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
