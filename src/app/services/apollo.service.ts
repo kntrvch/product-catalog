@@ -61,7 +61,7 @@ export class ApolloService {
     ).pipe(
       map(
         (response) =>
-          response?.getCategoryList?.items.map((category) => ({
+          response?.getCategoryList.items.map((category) => ({
             ...category,
             productCount: category.products.items.length,
           })) || []
@@ -94,7 +94,7 @@ export class ApolloService {
     `;
     return this.executeQuery<{ getCategory: Category }>(GET_CATEGORY, {
       _id: id,
-    }).pipe(map((response) => response?.getCategory));
+    }).pipe(map((response) => response.getCategory));
   }
 
   getProduct(id: string): Observable<Product> {
@@ -109,6 +109,11 @@ export class ApolloService {
           image {
             sourceUrl
           }
+          category {
+            _id
+            name
+            slug
+          }
         }
       }
     `;
@@ -116,8 +121,44 @@ export class ApolloService {
       _id: id,
     }).pipe(
       map((response) => ({
-        ...response?.getProduct,
+        ...response.getProduct,
       }))
+    );
+  }
+
+  getRelatedProducts(
+    categoryId: string,
+    productId: string,
+    limit: number
+  ): Observable<Product[]> {
+    const GET_RELATED_PRODUCTS = gql`
+      query ($categoryId: ID!) {
+        getCategory(_id: $categoryId) {
+          products {
+            items {
+              _id
+              name
+              image {
+                sourceUrl
+              }
+            }
+          }
+        }
+      }
+    `;
+
+    return this.executeQuery<{ getCategory: Category }>(GET_RELATED_PRODUCTS, {
+      categoryId: categoryId,
+    }).pipe(
+      map((response) => {
+        const products = response.getCategory.products.items;
+
+        const relatedProducts = products.filter(
+          (product: Product) => product._id !== productId
+        );
+
+        return relatedProducts.slice(0, limit);
+      })
     );
   }
 }

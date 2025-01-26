@@ -9,7 +9,9 @@
   --bs-body-bg: #121212;
   --bs-body-color: #e0e0e0;
   --bs-link-color: #fff;
-  --bs-link-hover-color: rgba(255, 255, 255, 0.7);
+  --bs-link-color-rgb: 255, 255, 255;
+  --bs-link-hover-color: rgb(225, 225, 225);
+  --bs-link-hover-color-rgb: 225, 225, 225;
   --bs-navbar-bg: #343a40;
   --bs-navbar-color: #ffffff;
   --bs-border-color-translucent: rgba(255, 255, 255, 0.175);

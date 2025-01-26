@@ -5,10 +5,11 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ApolloService } from '../../services/apollo.service';
 import { Product } from '../models/product';
+import { RelatedProductListComponent } from '../related-product-list/related-product-list.component';
 
 @Component({
   selector: 'app-product-view-page',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, RelatedProductListComponent],
   templateUrl: './product-view-page.component.html',
   styleUrl: './product-view-page.component.scss',
 })
@@ -22,7 +23,7 @@ export class ProductViewPageComponent {
     private countdownService: CountdownService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {    
     this.product$ = this.activatedRoute.params.pipe(
       switchMap((params) => {
         const productId = params['id'];

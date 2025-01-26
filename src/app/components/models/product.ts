@@ -7,4 +7,9 @@ export interface Product {
   image: {
     sourceUrl: string;
   };
+  category: {
+    _id: string;
+    name: string;
+    slug: string;
+  };
 }

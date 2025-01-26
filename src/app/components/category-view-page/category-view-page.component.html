@@ -1,5 +1,9 @@
 <div class="container" *ngIf="category$ | async as category">
-    <h1 class="my-5">{{ category.name }}</h1>
+    <ol class="breadcrumb mt-5">
+        <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
+        <li class="breadcrumb-item active">{{ category.name }}</li>
+    </ol>
+    <h1 class="mb-5">{{ category.name }}</h1>
     <div class="row row-cols-1 row-cols-lg-3 mb-5" *ngIf="category.products.items.length > 0; else noProducts">
         <div class="col" *ngFor="let product of category.products.items">
             <a class="text-decoration-none" [routerLink]="['/product', product._id]">

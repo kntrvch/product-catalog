@@ -1,5 +1,11 @@
 <div class="container" *ngIf="product$ | async as product">
-    <h1 class="my-5">{{ product.name }}</h1>
+    <ol class="breadcrumb mt-5">
+        <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
+        <li class="breadcrumb-item"><a [routerLink]="['/category', product.category._id]">{{ product.category.name
+                }}</a></li>
+        <li class="breadcrumb-item active">{{ product.name }}</li>
+    </ol>
+    <h1 class="mb-5">{{ product.name }}</h1>
     <div class="row mb-5">
         <div class="col-lg-8">
             <img [src]="product.image.sourceUrl" class="card-img-top mb-3 mb-lg-0" [alt]="product.name">
@@ -7,8 +13,10 @@
         <div class="col-lg-4">
             <div class="card">
                 <div class="card-body">
+                    <h5 class="card-title mb-0">{{ product.name }}</h5>
+                    <div class="text-uppercase fs-6 text-muted mb-3">{{ product.category.name }}</div>
                     <div class="fs-1 fw-bold mb-3">${{ product.price }}</div>
-                    <h5 class="card-title">{{ product.name }}</h5>
+
                     <p class="card-text">{{ product.description }}</p>
 
                     <div class="alert alert-primary text-center my-3">
@@ -28,4 +36,5 @@
             </div>
         </div>
     </div>
+    <app-related-product-list [categoryId]="product.category._id" [productId]="product._id"></app-related-product-list>
 </div>
