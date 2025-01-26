@@ -1,30 +1,45 @@
 import { Injectable } from '@angular/core';
 import { ApolloClient, gql, InMemoryCache } from '@apollo/client/core';
-import { catchError, from, map, Observable } from 'rxjs';
+import { catchError, from, map, Observable, of } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { Product } from '../components/models/product';
+import { Category } from '../components/models/category';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApolloService {
-  client: ApolloClient<any>;
+  private client: ApolloClient<any>;
 
   constructor() {
     this.client = new ApolloClient({
-      uri: 'https://api.takeshape.io/project/0b04a83c-2b46-402d-8230-9e5ec900d824/graphql',
+      uri: `${this.getApiUri()}`,
       cache: new InMemoryCache(),
       headers: {
-        Authorization: 'Bearer b73ff63e39ba491eafc5e94f238e2c73',
+        Authorization: `Bearer ${this.getApiKey()}`,
       },
     });
   }
 
-  query<T>(query: any, variables?: any): Observable<T> {
+  private getApiKey(): string {
+    return environment['GRAPHQL_API_KEY'] || '';
+  }
+
+  private getApiUri(): string {
+    return environment['GRAPHQL_API_URI'] || '';
+  }
+
+  private executeQuery<T>(query: any, variables?: any): Observable<T> {
     return from(this.client.query<T>({ query, variables })).pipe(
-      map((result) => result.data)
+      map((result) => result.data),
+      catchError((error) => {
+        console.error(error);
+        return of(null as T);
+      })
     );
   }
 
-  getCategories(): Observable<any> {
+  getCategories(): Observable<Category[]> {
     const GET_CATEGORIES = gql`
       query getCategories {
         getCategoryList {
@@ -41,27 +56,20 @@ export class ApolloService {
         }
       }
     `;
-
-    return from(
-      this.client.watchQuery({
-        query: GET_CATEGORIES,
-      })
+    return this.executeQuery<{ getCategoryList: { items: Category[] } }>(
+      GET_CATEGORIES
     ).pipe(
-      map((response: any) => {
-        console.log(response);
-        return response.data.getCategoryList.items.map((category: any) => ({
-          ...category,
-          productCount: category.products.items.length,
-        }));
-      }),
-      catchError((error) => {
-        console.error('Error fetching categories:', error);
-        return [];
-      })
+      map(
+        (response) =>
+          response?.getCategoryList?.items.map((category) => ({
+            ...category,
+            productCount: category.products.items.length,
+          })) || []
+      )
     );
   }
 
-  getCategory(id: string): Observable<any> {
+  getCategory(id: string): Observable<Category> {
     const GET_CATEGORY = gql`
       query ($_id: ID!) {
         getCategory(_id: $_id) {
@@ -84,25 +92,12 @@ export class ApolloService {
         }
       }
     `;
-
-    return from(
-      this.client.watchQuery({
-        query: GET_CATEGORY,
-        variables: { _id: id },
-      })
-    ).pipe(
-      map((response: any) => {
-        console.log(response);
-        return response.data.getCategory;
-      }),
-      catchError((error) => {
-        console.error('Error fetching category:', error);
-        return [];
-      })
-    );
+    return this.executeQuery<{ getCategory: Category }>(GET_CATEGORY, {
+      _id: id,
+    }).pipe(map((response) => response?.getCategory));
   }
 
-  getProduct(id: string): Observable<any> {
+  getProduct(id: string): Observable<Product> {
     const GET_PRODUCT = gql`
       query ($_id: ID!) {
         getProduct(_id: $_id) {
@@ -117,29 +112,12 @@ export class ApolloService {
         }
       }
     `;
-
-    return from(
-      this.client.watchQuery({
-        query: GET_PRODUCT,
-        variables: { _id: id },
-      })
-    ).pipe(
-      map((response: any) => {
-        console.log(response);
-        const product = response.data.getProduct;
-        return {
-          id: product._id,
-          name: product.name,
-          description: product.description,
-          price: product.price,
-          slug: product.slug,
-          image: product.image.sourceUrl,
-        };
-      }),
-      catchError((error) => {
-        console.error('Error fetching product:', error);
-        return [];
-      })
+    return this.executeQuery<{ getProduct: Product }>(GET_PRODUCT, {
+      _id: id,
+    }).pipe(
+      map((response) => ({
+        ...response?.getProduct,
+      }))
     );
   }
 }

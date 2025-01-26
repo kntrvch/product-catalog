@@ -4,6 +4,7 @@ import { Observable, switchMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ApolloService } from '../../services/apollo.service';
+import { Product } from '../models/product';
 
 @Component({
   selector: 'app-product-view-page',
@@ -12,7 +13,7 @@ import { ApolloService } from '../../services/apollo.service';
   styleUrl: './product-view-page.component.scss',
 })
 export class ProductViewPageComponent {
-  product$!: Observable<any>;
+  product$!: Observable<Product>;
   countdown$!: Observable<string>;
 
   constructor(

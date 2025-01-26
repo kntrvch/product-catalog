@@ -3,6 +3,7 @@ import { ApolloService } from '../../services/apollo.service';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { Category } from '../models/category';
 
 @Component({
   selector: 'app-home-page',
@@ -11,7 +12,7 @@ import { RouterModule } from '@angular/router';
   styleUrl: './home-page.component.scss',
 })
 export class HomePageComponent {
-  categories$!: Observable<any[]>;
+  categories$!: Observable<Category[]>;
 
   constructor(private apollo: ApolloService) {}
 
