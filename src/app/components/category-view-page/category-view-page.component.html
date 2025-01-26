@@ -1,6 +1,6 @@
 <div class="container" *ngIf="category$ | async as category">
     <h1 class="my-5">{{ category.name }}</h1>
-    <div class="row row-cols-1 row-cols-lg-3 mb-5">
+    <div class="row row-cols-1 row-cols-lg-3 mb-5" *ngIf="category.products.items.length > 0; else noProducts">
         <div class="col" *ngFor="let product of category.products.items">
             <a class="text-decoration-none" [routerLink]="['/product', product._id]">
                 <div class="card mb-3">
@@ -19,4 +19,9 @@
             </a>
         </div>
     </div>
+    <ng-template #noProducts>
+        <div class="alert alert-primary text-center mb-5">
+            There's no products in this category
+        </div>
+    </ng-template>
 </div>
