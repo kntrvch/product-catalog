@@ -120,8 +120,8 @@ export class ApolloService {
     limit: number
   ): Observable<Product[]> {
     const GET_RELATED_PRODUCTS = gql`
-      query ($categorySlug: String!) {
-        products(where: {category: {slug: $categorySlug}}) {
+      query ($categorySlug: String!, $productSlug: String!) {
+        products(where: {category: {slug: $categorySlug}, AND: {slug_not: $productSlug}}) {
           id
           name
           slug
@@ -134,16 +134,11 @@ export class ApolloService {
     `;
 
     return this.executeQuery<{ products: Product[] }>(GET_RELATED_PRODUCTS, {
-      categorySlug,
+      categorySlug, productSlug
     }).pipe(
       map((response) => {
         const products = response.products;
-
-        const relatedProducts = products.filter(
-          (product: Product) => product.slug !== productSlug
-        );
-
-        return relatedProducts.slice(0, limit);
+        return products.slice(0, limit);
       })
     );
   }
