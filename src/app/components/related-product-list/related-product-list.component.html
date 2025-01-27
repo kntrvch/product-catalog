@@ -1,7 +1,7 @@
 <ng-container *ngIf="products$ | async as products">
     <ng-container *ngIf="products.length > 0">
         <h2 class="mb-3">You may also like</h2>
-        <div class="row row-cols-1 row-cols-lg-3 mb-5">
+        <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3 mb-5">
             <div class="col" *ngFor="let product of products; let i = index">
                 <a class="text-decoration-none" [routerLink]="['/product', product.slug]">
                     <div class="card mb-3">

@@ -34,7 +34,7 @@ export class ApolloService {
 
   getCategories(): Observable<Category[]> {
     const GET_CATEGORIES = gql`
-      query getCategories {
+      query {
         categories {
           id
           name
@@ -121,27 +121,23 @@ export class ApolloService {
   ): Observable<Product[]> {
     const GET_RELATED_PRODUCTS = gql`
       query ($categorySlug: String!) {
-        category(where: { slug: $categorySlug }) {
-          products {
-            ... on Product {
-              id
-              name
-              slug
-              image {
-                url
-              }
-              price
-            }
+        products(where: {category: {slug: $categorySlug}}) {
+          id
+          name
+          slug
+          image {
+            url
           }
+          price
         }
       }
     `;
 
-    return this.executeQuery<{ category: Category }>(GET_RELATED_PRODUCTS, {
+    return this.executeQuery<{ products: Product[] }>(GET_RELATED_PRODUCTS, {
       categorySlug,
     }).pipe(
       map((response) => {
-        const products = response.category.products;
+        const products = response.products;
 
         const relatedProducts = products.filter(
           (product: Product) => product.slug !== productSlug
