@@ -1,15 +1,13 @@
+import { Category } from "./category";
+
 export interface Product {
-  _id: string;
+  id: string;
   name: string;
   description: string;
   price: number;
   slug: string;
   image: {
-    sourceUrl: string;
+    url: string;
   };
-  category: {
-    _id: string;
-    name: string;
-    slug: string;
-  };
+  category: Category;
 }

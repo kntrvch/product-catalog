@@ -5,7 +5,7 @@ import { ProductViewPageComponent } from './components/product-view-page/product
 
 export const routes: Routes = [
   { path: 'home', component: HomePageComponent },
-  { path: 'category/:id', component: CategoryViewPageComponent },
+  { path: 'category/:slug', component: CategoryViewPageComponent },
   { path: 'product/:id', component: ProductViewPageComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];

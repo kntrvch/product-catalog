@@ -4,11 +4,11 @@
         <li class="breadcrumb-item active">{{ category.name }}</li>
     </ol>
     <h1 class="mb-5">{{ category.name }}</h1>
-    <div class="row row-cols-1 row-cols-lg-3 mb-5" *ngIf="category.products.items.length > 0; else noProducts">
-        <div class="col" *ngFor="let product of category.products.items">
-            <a class="text-decoration-none" [routerLink]="['/product', product._id]">
+    <div class="row row-cols-1 row-cols-lg-3 mb-5" *ngIf="category.products.length > 0; else noProducts">
+        <div class="col" *ngFor="let product of category.products">
+            <a class="text-decoration-none" [routerLink]="['/product', product.slug]">
                 <div class="card mb-3">
-                    <img [src]="product.image.sourceUrl" class="card-img-top" [alt]="product.name">
+                    <img [src]="product.image.url" class="card-img-top" [alt]="product.name">
                     <div class="card-body">
                         <h5 class="card-title">{{ product.name }}</h5>
                         <p class="card-text fw-lighter fs-6">{{ product.description }}</p>

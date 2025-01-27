@@ -15,14 +15,7 @@ export class ApolloService {
     this.client = new ApolloClient({
       uri: `${this.getApiUri()}`,
       cache: new InMemoryCache(),
-      headers: {
-        Authorization: `Bearer ${this.getApiKey()}`,
-      },
     });
-  }
-
-  private getApiKey(): string {
-    return environment['GRAPHQL_API_KEY'] || '';
   }
 
   private getApiUri(): string {
@@ -42,119 +35,116 @@ export class ApolloService {
   getCategories(): Observable<Category[]> {
     const GET_CATEGORIES = gql`
       query getCategories {
-        getCategoryList {
-          items {
-            _id
-            name
-            slug
-            products {
-              items {
-                _id
-              }
+        categories {
+          id
+          name
+          slug
+          products {
+            ... on Product {
+              id
             }
           }
         }
       }
     `;
-    return this.executeQuery<{ getCategoryList: { items: Category[] } }>(
-      GET_CATEGORIES
-    ).pipe(
+    return this.executeQuery<{ categories: Category[] }>(GET_CATEGORIES).pipe(
       map(
         (response) =>
-          response?.getCategoryList.items.map((category) => ({
+          response.categories.map((category) => ({
             ...category,
-            productCount: category.products.items.length,
+            productCount: category.products.length,
           })) || []
       )
     );
   }
 
-  getCategory(id: string): Observable<Category> {
+  getCategory(slug: string): Observable<Category> {
     const GET_CATEGORY = gql`
-      query ($_id: ID!) {
-        getCategory(_id: $_id) {
-          _id
+      query ($slug: String!) {
+        category(where: { slug: $slug }) {
+          id
           name
           products {
-            items {
-              _id
-              description
+            ... on Product {
+              id
               name
-              price
               slug
               image {
-                sourceUrl
+                url
               }
+              price
             }
-            total
           }
-          slug
         }
       }
     `;
-    return this.executeQuery<{ getCategory: Category }>(GET_CATEGORY, {
-      _id: id,
-    }).pipe(map((response) => response.getCategory));
+    return this.executeQuery<{ category: Category }>(GET_CATEGORY, {
+      slug,
+    }).pipe(map((response) => response.category));
   }
 
-  getProduct(id: string): Observable<Product> {
+  getProduct(slug: string): Observable<Product> {
     const GET_PRODUCT = gql`
-      query ($_id: ID!) {
-        getProduct(_id: $_id) {
-          _id
+      query ($slug: String!) {
+        product(where: { slug: $slug }) {
+          id
           name
           description
           price
           slug
           image {
-            sourceUrl
+            url
           }
           category {
-            _id
-            name
-            slug
+            ... on Category {
+              id
+              name
+              slug
+            }
           }
         }
       }
     `;
-    return this.executeQuery<{ getProduct: Product }>(GET_PRODUCT, {
-      _id: id,
+    return this.executeQuery<{ product: Product }>(GET_PRODUCT, {
+      slug,
     }).pipe(
       map((response) => ({
-        ...response.getProduct,
+        ...response.product,
       }))
     );
   }
 
   getRelatedProducts(
-    categoryId: string,
-    productId: string,
+    categorySlug: string,
+    productSlug: string,
     limit: number
   ): Observable<Product[]> {
     const GET_RELATED_PRODUCTS = gql`
-      query ($categoryId: ID!) {
-        getCategory(_id: $categoryId) {
+      query ($categorySlug: String!) {
+        category(where: { slug: $categorySlug }) {
           products {
-            items {
-              _id
+            ... on Product {
+              id
               name
+              slug
               image {
-                sourceUrl
+                url
               }
+              price
             }
           }
         }
       }
     `;
 
-    return this.executeQuery<{ getCategory: Category }>(GET_RELATED_PRODUCTS, {
-      categoryId: categoryId,
+    return this.executeQuery<{ category: Category }>(GET_RELATED_PRODUCTS, {
+      categorySlug,
     }).pipe(
       map((response) => {
-        const products = response.getCategory.products.items;
+        const products = response.category.products;
 
         const relatedProducts = products.filter(
-          (product: Product) => product._id !== productId
+          (product: Product) => product.slug !== productSlug
         );
 
         return relatedProducts.slice(0, limit);

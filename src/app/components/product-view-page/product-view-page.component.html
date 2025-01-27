@@ -1,14 +1,14 @@
 <div class="container" *ngIf="product$ | async as product; else loading">
     <ol class="breadcrumb mt-5">
         <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
-        <li class="breadcrumb-item"><a [routerLink]="['/category', product.category._id]">{{ product.category.name
+        <li class="breadcrumb-item"><a [routerLink]="['/category', product.category.slug]">{{ product.category.name
                 }}</a></li>
         <li class="breadcrumb-item active">{{ product.name }}</li>
     </ol>
     <h1 class="mb-5">{{ product.name }}</h1>
     <div class="row mb-5">
         <div class="col-lg-8">
-            <img [src]="product.image.sourceUrl" class="card-img-top mb-3 mb-lg-0" [alt]="product.name">
+            <img [src]="product.image.url" class="card-img-top mb-3 mb-lg-0" [alt]="product.name">
         </div>
         <div class="col-lg-4">
             <div class="card">
@@ -44,7 +44,7 @@
             </div>
         </div>
     </div>
-    <app-related-product-list [categoryId]="product.category._id" [productId]="product._id"></app-related-product-list>
+    <app-related-product-list [categorySlug]="product.category.slug" [productSlug]="product.slug"></app-related-product-list>
 </div>
 
 <ng-template #loading>

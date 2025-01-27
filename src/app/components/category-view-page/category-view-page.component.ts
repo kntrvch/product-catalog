@@ -22,8 +22,8 @@ export class CategoryViewPageComponent {
   ngOnInit() {
     this.category$ = this.activatedRoute.params.pipe(
       switchMap((params) => {
-        const categoryId = params['id']; 
-        return this.apollo.getCategory(categoryId);
+        const categorySlug = params['slug']; 
+        return this.apollo.getCategory(categorySlug);
       })
     );
   }

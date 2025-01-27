@@ -12,8 +12,8 @@ import { Product } from '../models/product';
   styleUrl: './related-product-list.component.scss',
 })
 export class RelatedProductListComponent implements OnChanges {
-  @Input() categoryId!: string;
-  @Input() productId!: string;
+  @Input() categorySlug!: string;
+  @Input() productSlug!: string;
   @Input() limit = 3;
 
   products$!: Observable<Product[]>;
@@ -22,8 +22,8 @@ export class RelatedProductListComponent implements OnChanges {
 
   ngOnChanges() {
     this.products$ = this.apollo.getRelatedProducts(
-      this.categoryId,
-      this.productId,
+      this.categorySlug,
+      this.productSlug,
       this.limit
     );
   }

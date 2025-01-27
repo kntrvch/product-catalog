@@ -16,7 +16,7 @@
 <div class="container">
     <div class="row row-cols-1 row-cols-lg-3 my-5" *ngIf="categories$ | async as categories; else loading">
         <div class="col" *ngFor="let category of categories; let i = index">
-            <a class="text-decoration-none" [routerLink]="['/category', category._id]">
+            <a class="text-decoration-none" [routerLink]="['/category', category.slug]">
                 <div class="card mb-3">
                     <div class="row align-items-center g-0">
                         <div class="col-md-4 d-none d-md-flex">
